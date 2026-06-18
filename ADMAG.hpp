@@ -1,9 +1,6 @@
 #pragma once
 
-#include <vector>
-#include <algorithm>
 #include <utility>
-#include <cstdint>
 #include <random>
 #include <set>
 #include <unordered_set>
@@ -15,6 +12,7 @@
 // Variáveis globais definidas na inicialização do programa baseado no tamanho de uma solução
 extern uint16_t tam_particao;
 extern uint8_t max_mutacoes;
+extern uint32_t total_pais;
 
 candidato criarCandidatoAleatorio(const std::vector<uint8_t>& p, std::mt19937& gen);
 

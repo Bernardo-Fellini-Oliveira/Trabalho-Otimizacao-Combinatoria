@@ -1,5 +1,4 @@
 #include "ADMAG.hpp"
-#include "candidato.hpp"
 
 // Cria um novo candidato  com uma permutação aleatória de tarefas
 candidato criarCandidatoAleatorio(const std::vector<uint8_t>& p, std::mt19937& gen) {
@@ -12,11 +11,12 @@ candidato criarCandidatoAleatorio(const std::vector<uint8_t>& p, std::mt19937& g
 
 // Função que seleciona os pais que irão reproduzir para gerar os novos candidatos da próxima população
 // Usa algoritmo de k-torneio (seleciona k candidatos n vezes [n = limite populacional] e seleciona o melhor deles para reprodução a cada rodada)
+// implementação sem reposição
 setDeCandidatos selecionarPais(const setDeCandidatos& populacao_atual, const float_t k, const uint32_t limite_populacional, std::mt19937& gen) {
     std::uniform_int_distribution<int32_t> dist(0, limite_populacional);
     setDeCandidatos pais(compararCandidatos);
     auto it = populacao_atual.begin();
-    for(int i = 0 ; i < limite_populacional; ++i) {
+    while(pais.size() < total_pais) {
         uint32_t idx_do_selecionado = dist(gen);
         std::advance(it, idx_do_selecionado);
         candidato reprodutor = *it;
@@ -32,7 +32,7 @@ setDeCandidatos selecionarPais(const setDeCandidatos& populacao_atual, const flo
 }
 
 // Gera os filhos dessa geração a partir dos pais selecionados
-// A cada iteração, são gerados (2^limite_populacional)-1 filhos
+// A cada iteração, são gerados (2^total_pais)-1 filhos
 setDeCandidatos gerarFilhos(const setDeCandidatos& pais, std::mt19937& gen) {
     std::uniform_int_distribution<uint16_t> dist(0, tarefas-tam_particao);
     setDeCandidatos filhos;

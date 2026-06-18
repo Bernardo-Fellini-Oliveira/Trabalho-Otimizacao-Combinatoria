@@ -49,14 +49,13 @@ int main(int argc, char **argv)
             {
                 printf("O valor de k para o k-torneio deve ser maior que 0\n");
                 error = true;
+            } else {
+                static_cast<uint16_t>(k);
             }
-            static_cast<uint16_t>(k);
         } catch(std::out_of_range& e) {
             printf("K passado não foi inteiro\n");
             error = true;
         }
-
-
 
         // #########################################################################################################################################################
 
@@ -69,14 +68,13 @@ int main(int argc, char **argv)
             {
                 printf("O limite populacional deve ser maior que 1 para poder simular reprodução entre soluções\n");
                 error = true;
+            } else {
+                static_cast<uint32_t>(limite_populacional);
             }
         } catch(std::out_of_range& e) {
             printf("limite populacional passado não foi inteiro\n");
             error = true;
         }
-
-
-        static_cast<uint32_t>(limite_populacional);
 
         // #########################################################################################################################################################
 
@@ -219,8 +217,11 @@ int main(int argc, char **argv)
                     std::cin >> tarefas;
                 }
 
+                // Setando variáveis globais
                 tam_particao = static_cast<uint8_t>(floor((tarefas / 3)));
                 max_mutacoes = static_cast<uint8_t>(floor((tarefas / 2)));
+                total_pais = std::max((uint32_t)2, static_cast<uint32_t>(floor((limite_populacional / 5))));
+
                 std::vector<uint8_t> solucao_inicial(tarefas);
 
                 if(argc == 10) {
@@ -235,7 +236,7 @@ int main(int argc, char **argv)
                     }
                 }
 
-                // TODO: definir lógica de executar por max_iter ou por tempo
+                // Execução do algoritmo principal
                 const candidato melhor_solucao = ADMAG(k,
                                                     limite_populacional,
                                                     max_atuais,
@@ -246,19 +247,19 @@ int main(int argc, char **argv)
                                                     seed);
 
                 out_file.open(out_file_name);
-                const char* resultado_permutacao = "A melhor permutação das tarefas do problema foi: \n";
-                const char* resultado_inicializacao = "O melhor tempo de inicialização correspondente para cada uma das tarefas foi: \n";
-                const char* resultado_makespan = "O makespan correspondente dessa melhor solução encontrada foi: \n";
+                const char* msg_permutacao = "A melhor permutação das tarefas do problema foi: \n";
+                const char* msg_inicializacao = "O melhor tempo de inicialização correspondente para cada uma das tarefas foi: \n";
+                const char* msg_makespan = "O makespan correspondente dessa melhor solução encontrada foi: \n";
 
                 for(int i = 0; i < 2; ++i) {
                     if (i == 0) {
-                        printf(resultado_permutacao);
-                        out_file << resultado_permutacao;
+                        printf(msg_permutacao);
+                        out_file << msg_permutacao;
                     } else {
                         std::cout << std::endl;
                         out_file << std::endl;
-                        printf(resultado_inicializacao);
-                        out_file << resultado_inicializacao;
+                        printf(msg_inicializacao);
+                        out_file << msg_inicializacao;
                     }
                     for(int j = 0; j < tarefas; ++j) {
                         if (i == 0) {
@@ -270,9 +271,9 @@ int main(int argc, char **argv)
                         }
                     }
                 }
-                printf(resultado_makespan);
+                printf(msg_makespan);
                 std::cout << melhor_solucao.makespan;
-                out_file << resultado_makespan;
+                out_file << msg_makespan;
                 out_file << melhor_solucao.makespan;
                 out_file.close();
             } catch(std::ios_base::failure& e) {
