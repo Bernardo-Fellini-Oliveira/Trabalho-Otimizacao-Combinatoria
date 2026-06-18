@@ -1,5 +1,4 @@
 #pragma once
-
 #include <utility>
 #include <random>
 #include <set>
@@ -26,4 +25,3 @@ setDeCandidatos determinarNovaPopulacao(const setDeCandidatos& populacao_atual, 
 
 // Função principal do algoritmo
 candidato ADMAG(const uint16_t k, const uint32_t limite_populacional, const uint16_t max_atuais, const uint16_t max_novos, const bool modo_temporal, const uint32_t condicao_de_parada, const std::vector<uint8_t>& solucao_inicial, const int32_t seed);
-

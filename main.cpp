@@ -3,7 +3,11 @@
 #include <string>
 #include <iostream>
 
-uint32_t random_seed;
+// Pré-setagem de varáveis globais externas para o compilador não reclamar
+uint16_t tarefas = 0;
+uint16_t tam_particao = 0;
+uint8_t max_mutacoes = 0;
+uint32_t total_pais = 0;
 
 // argumentos:
 // [0] - nome do arquivo do programa (padrão)
@@ -50,7 +54,7 @@ int main(int argc, char **argv)
                 printf("O valor de k para o k-torneio deve ser maior que 0\n");
                 error = true;
             } else {
-                static_cast<uint16_t>(k);
+                k = static_cast<uint16_t>(k);
             }
         } catch(std::out_of_range& e) {
             printf("K passado não foi inteiro\n");
@@ -69,7 +73,7 @@ int main(int argc, char **argv)
                 printf("O limite populacional deve ser maior que 1 para poder simular reprodução entre soluções\n");
                 error = true;
             } else {
-                static_cast<uint32_t>(limite_populacional);
+                limite_populacional = static_cast<uint32_t>(limite_populacional);
             }
         } catch(std::out_of_range& e) {
             printf("limite populacional passado não foi inteiro\n");
@@ -94,7 +98,7 @@ int main(int argc, char **argv)
             }
             else
             {
-                static_cast<uint32_t>(max_atuais);
+                max_atuais = static_cast<uint32_t>(max_atuais);
             }
         } catch(std::out_of_range& e) {
             printf("Total de sobreviventes da população atual passado não foi inteiro\n");
@@ -125,7 +129,7 @@ int main(int argc, char **argv)
             }
             else
             {
-                static_cast<uint32_t>(max_novos);
+                max_novos = static_cast<uint32_t>(max_novos);
             }
         } catch(std::out_of_range& e) {
             printf("Total de sobreviventes dos filhos passado não foi inteiro\n");
@@ -145,7 +149,7 @@ int main(int argc, char **argv)
             }
             else
             {
-                static_cast<bool>(modo_temporal);
+                modo_temporal = static_cast<bool>(modo_temporal);
             }
         } catch(std::out_of_range& e) {
             printf("Modo temporal passado não foi inteiro\n");
@@ -165,7 +169,7 @@ int main(int argc, char **argv)
             }
             else
             {
-                static_cast<uint32_t>(condicao_de_parada);
+                condicao_de_parada = static_cast<uint32_t>(condicao_de_parada);
             }
         } catch(std::out_of_range& e) {
             printf("Condição de parada passsada não foi inteira\n");
@@ -182,7 +186,7 @@ int main(int argc, char **argv)
                     printf("Seed passada deve ser um valor não-negativo\n");
                     error = true;
                 } else {
-                    static_cast<uint32_t>(seed);
+                    seed = static_cast<uint32_t>(seed);
                 }
             } catch(std::out_of_range& e) {
                 printf("Seed passada não foi inteira\n");
