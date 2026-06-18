@@ -12,8 +12,8 @@
 #include <candidato.hpp>
 
 // Variáveis globais definidas na inicialização do programa baseado no tamanho de uma solução
-extern const uint16_t tam_particao;
-extern const uint8_t max_mutacoes;
+extern uint16_t tam_particao;
+extern uint8_t max_mutacoes;
 
 candidato criarCandidatoAleatorio(const std::vector<uint8_t>& p, std::mt19937& gen);
 

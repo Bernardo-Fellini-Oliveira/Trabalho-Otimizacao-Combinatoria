@@ -7,7 +7,7 @@
 #define setDeCandidatos std::set<candidato, bool(*)(const candidato& a, const candidato& b)>
 
 // Total de tarefas do arquivo passado em .main
-extern const uint16_t tarefas;
+extern uint16_t tarefas;
 
 // Representação de uma possível solução
 struct candidato {
