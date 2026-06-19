@@ -5,7 +5,7 @@ Projeto Final da Disciplina de Otimização Combinatória do Curso de Ciência d
 1. Clone esse repositório localmente.
 2. Certifique-se de que tenha o compilador g++ instalado.
 3. Compile com mingw32-make (assumindo Windows). Isso criará o arquivo "heuristica.exe".
-4. Caso mude o código fonte, use o comando mingw32-make clean antes de compilar novamente para evitar conflitos.
+4. Caso mude o código fonte, use o comando mingw32-make clean antes de compilar novamente para evitar conflitos (fça isso antes de fizer commit também para não poluir o ambiente).
 
 # Execução
 Para executar o programa:
@@ -27,6 +27,6 @@ Para executar o programa:
 # Solver
 Para usar o solver: 
 1. Abra o notebook ADM_Solver no google colabs com um ambiente de execução "Julia"
-2. Faça upload do arquivo cujo
-3. Troque o comentário em "filename = # Insira aqui o nome do arquivo da instância" com o arquivo de instância .dat da sua preferência
+2. Faça upload do arquivo cuja instâcia deseja analisar
+3. Troque o comentário em "filename = #Insira aqui o nome do arquivo de instância upado" com o arquivo de instância .dat da sua preferência
 4. Execute as células
