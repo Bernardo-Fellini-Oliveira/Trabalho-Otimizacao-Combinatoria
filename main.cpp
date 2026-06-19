@@ -217,7 +217,7 @@ int main(int argc, char **argv)
                     tarefas = std::stoi(line);
                 } else {
                     // entrada por stdin
-                    printf("Insira uma instância no formato do problema: \n");
+                    printf("Insira o tamanho da instância do problema e então insira a instância: \n");
                     std::cin >> tarefas;
                 }
 
