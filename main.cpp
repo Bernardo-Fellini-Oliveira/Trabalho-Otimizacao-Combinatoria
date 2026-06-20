@@ -47,16 +47,21 @@ int main(int argc, char **argv)
         // Checar validade do valor de k do k-torneio
         int16_t k;
 
-        try {
+        try
+        {
             k = std::stoi(argv[2]);
             if (k < 1)
             {
                 printf("O valor de k para o k-torneio deve ser maior que 0\n");
                 error = true;
-            } else {
+            }
+            else
+            {
                 k = static_cast<uint16_t>(k);
             }
-        } catch(std::out_of_range& e) {
+        }
+        catch (std::out_of_range &e)
+        {
             printf("K passado não foi inteiro\n");
             error = true;
         }
@@ -66,16 +71,21 @@ int main(int argc, char **argv)
         // Checar validade do limite populacional
         int32_t limite_populacional;
 
-        try {
+        try
+        {
             limite_populacional = std::stoi(argv[3]);
             if (limite_populacional < 2)
             {
                 printf("O limite populacional deve ser maior que 1 para poder simular reprodução entre soluções\n");
                 error = true;
-            } else {
+            }
+            else
+            {
                 limite_populacional = static_cast<uint32_t>(limite_populacional);
             }
-        } catch(std::out_of_range& e) {
+        }
+        catch (std::out_of_range &e)
+        {
             printf("limite populacional passado não foi inteiro\n");
             error = true;
         }
@@ -84,7 +94,8 @@ int main(int argc, char **argv)
 
         int32_t max_atuais;
 
-        try {
+        try
+        {
             max_atuais = std::stoi(argv[4]);
             if (max_atuais < 0)
             {
@@ -100,7 +111,9 @@ int main(int argc, char **argv)
             {
                 max_atuais = static_cast<uint32_t>(max_atuais);
             }
-        } catch(std::out_of_range& e) {
+        }
+        catch (std::out_of_range &e)
+        {
             printf("Total de sobreviventes da população atual passado não foi inteiro\n");
             error = true;
         }
@@ -109,7 +122,8 @@ int main(int argc, char **argv)
 
         int32_t max_novos;
 
-        try {
+        try
+        {
             max_novos = std::stoi(argv[5]);
             if (max_novos < 0)
             {
@@ -131,7 +145,9 @@ int main(int argc, char **argv)
             {
                 max_novos = static_cast<uint32_t>(max_novos);
             }
-        } catch(std::out_of_range& e) {
+        }
+        catch (std::out_of_range &e)
+        {
             printf("Total de sobreviventes dos filhos passado não foi inteiro\n");
             error = true;
         }
@@ -140,7 +156,8 @@ int main(int argc, char **argv)
 
         int modo_temporal;
 
-        try {
+        try
+        {
             modo_temporal = std::stoi(argv[6]);
             if (modo_temporal != 0 && modo_temporal != 1)
             {
@@ -151,7 +168,9 @@ int main(int argc, char **argv)
             {
                 modo_temporal = static_cast<bool>(modo_temporal);
             }
-        } catch(std::out_of_range& e) {
+        }
+        catch (std::out_of_range &e)
+        {
             printf("Modo temporal passado não foi inteiro\n");
             error = true;
         }
@@ -160,7 +179,8 @@ int main(int argc, char **argv)
 
         int32_t condicao_de_parada;
 
-        try {
+        try
+        {
             condicao_de_parada = std::stoi(argv[7]);
             if (condicao_de_parada < 1)
             {
@@ -171,7 +191,9 @@ int main(int argc, char **argv)
             {
                 condicao_de_parada = static_cast<uint32_t>(condicao_de_parada);
             }
-        } catch(std::out_of_range& e) {
+        }
+        catch (std::out_of_range &e)
+        {
             printf("Condição de parada passsada não foi inteira\n");
             error = true;
         }
@@ -179,16 +201,23 @@ int main(int argc, char **argv)
         // #########################################################################################################################################################
 
         int32_t seed = -1;
-        if(argc > 8) {
-            try {
+        if (argc > 8)
+        {
+            try
+            {
                 seed = std::stoi(argv[8]);
-                if(seed < 0) {
+                if (seed < 0)
+                {
                     printf("Seed passada deve ser um valor não-negativo\n");
                     error = true;
-                } else {
+                }
+                else
+                {
                     seed = static_cast<uint32_t>(seed);
                 }
-            } catch(std::out_of_range& e) {
+            }
+            catch (std::out_of_range &e)
+            {
                 printf("Seed passada não foi inteira\n");
                 error = true;
             }
@@ -197,93 +226,113 @@ int main(int argc, char **argv)
         // #########################################################################################################################################################
 
         // Lidando com arquivos e execução principal
-        if(!error) {
-            try{
-                std::string out_file_name = argv[1];
+        if (!error)
+        {
+            std::string out_file_name = argv[1];
 
-                std::ofstream out_file;
-                out_file.exceptions(std::ifstream::failbit | std::ofstream::badbit);
+            std::ofstream out_file;
 
-                std::ifstream in_file;
-                in_file.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+            std::ifstream in_file;
 
-                if(argc == 10) {
-                    // entrada por arquivo
-                    std::string in_file_name = argv[9];
-                    std::string line;
+            if (argc == 10)
+            {
+                // entrada por arquivo
+                std::string in_file_name = argv[9];
+                std::string line;
 
-                    in_file.open(in_file_name);
-                    std::getline(in_file, line);
-                    tarefas = std::stoi(line);
-                } else {
-                    // entrada por stdin
-                    printf("Insira o tamanho da instância do problema e então insira a instância: \n");
-                    std::cin >> tarefas;
+                in_file.open(in_file_name);
+
+                if (!in_file.is_open())
+                {
+                    std::cerr << "Erro ao abrir arquivo\n";
                 }
-
-                // Setando variáveis globais
-                tam_particao = static_cast<uint8_t>(floor((tarefas / 3)));
-                max_mutacoes = static_cast<uint8_t>(floor((tarefas / 2)));
-                total_pais = std::max((uint32_t)2, static_cast<uint32_t>(floor((limite_populacional / 5))));
-
-                std::vector<uint8_t> solucao_inicial(tarefas);
-
-                if(argc == 10) {
-                    std::string line;
-                    while(std::getline(in_file, line)) {
-                        solucao_inicial.push_back(static_cast<uint8_t>(std::stoi(line)));
-                    }
-                    in_file.close();
-                } else {
-                    for(int i = 0; i < tarefas; ++i) {
-                        std::cin >> solucao_inicial[i];
-                    }
+                if (!std::getline(in_file, line))
+                {
+                    std::cerr << "Erro ao ler primeira linha\n";
                 }
-
-                // Execução do algoritmo principal
-                const candidato melhor_solucao = ADMAG(k,
-                                                    limite_populacional,
-                                                    max_atuais,
-                                                    max_novos,
-                                                    modo_temporal,
-                                                    condicao_de_parada,
-                                                    solucao_inicial,
-                                                    seed);
-
-                out_file.open(out_file_name);
-                const char* msg_permutacao = "A melhor permutação das tarefas do problema foi: \n";
-                const char* msg_inicializacao = "O melhor tempo de inicialização correspondente para cada uma das tarefas foi: \n";
-                const char* msg_makespan = "O makespan correspondente dessa melhor solução encontrada foi: \n";
-
-                for(int i = 0; i < 2; ++i) {
-                    if (i == 0) {
-                        printf(msg_permutacao);
-                        out_file << msg_permutacao;
-                    } else {
-                        std::cout << std::endl;
-                        out_file << std::endl;
-                        printf(msg_inicializacao);
-                        out_file << msg_inicializacao;
-                    }
-                    for(int j = 0; j < tarefas; ++j) {
-                        if (i == 0) {
-                            std::cout << melhor_solucao.processamentos[j] << " ";
-                            out_file << melhor_solucao.processamentos[j] << " ";
-                        } else {
-                            std::cout << melhor_solucao.inicios[j] << " ";
-                            out_file << melhor_solucao.inicios[j] << " ";
-                        }
-                    }
-                }
-                printf(msg_makespan);
-                std::cout << melhor_solucao.makespan;
-                out_file << msg_makespan;
-                out_file << melhor_solucao.makespan;
-                out_file.close();
-            } catch(std::ios_base::failure& e) {
-                printf("Erro de arquivo. Certifique-se de que os nomes passados como argumentos estão certos\n");
-                error = true;
+                tarefas = std::stoi(line);
             }
+            else
+            {
+                // entrada por stdin
+                printf("Insira o tamanho da instância do problema e então insira a instância: \n");
+                std::cin >> tarefas;
+            }
+
+            // Setando variáveis globais
+            tam_particao = static_cast<uint8_t>(floor((tarefas / 3)));
+            max_mutacoes = static_cast<uint8_t>(floor((tarefas / 2)));
+            total_pais = std::max((uint32_t)2, static_cast<uint32_t>(floor((limite_populacional / 5))));
+
+            std::vector<uint8_t> solucao_inicial(tarefas);
+
+            if (argc == 10)
+            {
+                std::string line;
+                uint16_t i = 0;
+                while (std::getline(in_file, line))
+                {
+                    solucao_inicial[i] = static_cast<uint8_t>(std::stoi(line));
+                    ++i;
+                }
+                in_file.close();
+            }
+            else
+            {
+                for (int i = 0; i < tarefas; ++i)
+                {
+                    std::cin >> solucao_inicial[i];
+                }
+            }
+
+            // Execução do algoritmo principal
+            const candidato melhor_solucao = ADMAG(k,
+                                                   limite_populacional,
+                                                   max_atuais,
+                                                   max_novos,
+                                                   modo_temporal,
+                                                   condicao_de_parada,
+                                                   solucao_inicial,
+                                                   seed);
+
+            out_file.open(out_file_name);
+            const char *msg_permutacao = "A melhor permutacao das tarefas do problema foi: \n";
+            const char *msg_inicializacao = "O melhor tempo de inicializacao correspondente para cada uma das tarefas foi: \n";
+            const char *msg_makespan = "\nO makespan correspondente dessa melhor solucao encontrada foi: \n";
+
+            for (int i = 0; i < 2; ++i)
+            {
+                if (i == 0)
+                {
+                    printf(msg_permutacao);
+                    out_file << msg_permutacao;
+                }
+                else
+                {
+                    std::cout << std::endl;
+                    out_file << std::endl;
+                    printf(msg_inicializacao);
+                    out_file << msg_inicializacao;
+                }
+                for (int j = 0; j < tarefas; ++j)
+                {
+                    if (i == 0)
+                    {
+                        std::cout << static_cast<int>(melhor_solucao.processamentos[j]) << " ";
+                        out_file << static_cast<int>(melhor_solucao.processamentos[j]) << " ";
+                    }
+                    else
+                    {
+                        std::cout << static_cast<int>(melhor_solucao.inicios[j])  << " ";
+                        out_file << static_cast<int>(melhor_solucao.inicios[j]) << " ";
+                    }
+                }
+            }
+            printf(msg_makespan);
+            std::cout << melhor_solucao.makespan;
+            out_file << msg_makespan;
+            out_file << melhor_solucao.makespan;
+            out_file.close();
         }
     }
 

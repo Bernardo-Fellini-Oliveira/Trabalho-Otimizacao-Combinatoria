@@ -4,6 +4,7 @@
 #include <cstdint>
 
 #define setDeCandidatos std::set<candidato, bool(*)(const candidato& a, const candidato& b)>
+#define vetorDeCandidatos std::vector<candidato>
 
 // Total de tarefas do arquivo passado em .main
 extern uint16_t tarefas;
