@@ -1,0 +1,31 @@
+adm_50_1 2000
+adm_50_2 1945
+adm_50_3 1660
+adm_50_4 1849
+adm_100_1 3870
+adm_100_2 3430
+adm_100_3 4087
+adm_100_4 3004
+adm_1000_1 inf
+adm_1000_2 inf
+adm_1000_3 inf
+adm_1000_4 inf
+
+usando best_params
+
+seeds para instancias executadas em modo otimo
+seeds para instâncias de tamanho 50:
+seed para instância 1: 400404
+seed para instância 2: 479739
+seed para instância 3: 463328
+seed para instância 4: 549395
+seeds para instâncias de tamanho 100:
+seed para instância 1: 11278
+seed para instância 2: 280543
+seed para instância 3: 205162
+seed para instância 4: 126219
+seeds para instâncias de tamanho 1000:
+seed para instância 1: 54269
+seed para instância 2: 64427
+seed para instância 3: 466144
+seed para instância 4: 334030

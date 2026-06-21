@@ -1,0 +1,3 @@
+50: k = 30, limite_populacional = 40, max_atuais = 30 original, 12 escalado em relação a limite_populacional
+100: k = 30, limite_populacional = 100, max_atuais = 20
+1000: k = 30, limite_populacional = 100, max_atuais = 40

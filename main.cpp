@@ -4,22 +4,21 @@
 #include <iostream>
 
 // Pré-setagem de varáveis globais externas para o compilador não reclamar
-uint16_t tarefas = 0;
-uint16_t tam_particao = 0;
-uint8_t max_mutacoes = 0;
-uint32_t total_pais = 0;
+unsigned int tarefas = 0;
+unsigned int tam_particao = 0;
+unsigned int max_mutacoes = 0;
+unsigned int total_pais = 0;
 
 // argumentos:
 // [0] - nome do arquivo do programa (padrão)
 // [1] - Nome do arquivo de saída
 // [2] - valor k para o k-torneio (inteiro positivo)
 // [3] - limite populacional (inteiro positivo)
-// [4] - max da população atual para a próxima população (inteiro não-negativo)
-// [5] - max dos filhos para a próxima população (inteiro não-negativo)
-// [6] - determina se o algoritmo rodará por n iterações ou por uma certa duração de tempo em minutos (0|1)
-// [7] - mode 0 -> Máximo de iterações do algoritmo ; mode 1 -> tempo em minutos para execução (inteiro positivo)
-// [8] - OPICIONAL : valor de seed para garantir convergência em múltiplos experimentos (inteiro não-negativo)
-// [9] - OPICIONAL : nome do arquivo de entrada
+// [4] - max da população atual para a próxima população (inteiro não-negativo) (filhos é o inverso desse valor)
+// [5] - determina se o algoritmo rodará por n iterações ou por uma certa duração de tempo em minutos (0|1)
+// [6] - mode 0 -> Máximo de iterações do algoritmo ; mode 1 -> tempo em minutos para execução (inteiro positivo)
+// [7] - OPICIONAL : valor de seed para garantir convergência em múltiplos experimentos (inteiro não-negativo)
+// [8] - OPICIONAL : nome do arquivo de entrada
 
 int main(int argc, char **argv)
 {
@@ -27,13 +26,13 @@ int main(int argc, char **argv)
     bool error = false;
 
     // Checar se todos os argumentos foram inseridos
-    if (argc < 8)
+    if (argc < 7)
     {
         printf("Quantidade insuficiente de argumentos.\n");
         error = true;
     }
 
-    if (argc > 10)
+    if (argc > 9)
     {
         printf("Quantidade excessiva de argumentos.\n");
         error = true;
@@ -45,7 +44,7 @@ int main(int argc, char **argv)
     {
 
         // Checar validade do valor de k do k-torneio
-        int16_t k;
+        int k;
 
         try
         {
@@ -57,7 +56,7 @@ int main(int argc, char **argv)
             }
             else
             {
-                k = static_cast<uint16_t>(k);
+                k = static_cast<unsigned int>(k);
             }
         }
         catch (std::out_of_range &e)
@@ -69,19 +68,19 @@ int main(int argc, char **argv)
         // #########################################################################################################################################################
 
         // Checar validade do limite populacional
-        int32_t limite_populacional;
+        int limite_populacional;
 
         try
         {
             limite_populacional = std::stoi(argv[3]);
-            if (limite_populacional < 2)
+            if (limite_populacional < 1)
             {
-                printf("O limite populacional deve ser maior que 1 para poder simular reprodução entre soluções\n");
+                printf("O limite populacional deve ser um valor positivo\n");
                 error = true;
             }
             else
             {
-                limite_populacional = static_cast<uint32_t>(limite_populacional);
+                limite_populacional = static_cast<unsigned int>(limite_populacional);
             }
         }
         catch (std::out_of_range &e)
@@ -92,7 +91,8 @@ int main(int argc, char **argv)
 
         // #########################################################################################################################################################
 
-        int32_t max_atuais;
+        int max_atuais;
+        int max_novos;
 
         try
         {
@@ -109,7 +109,8 @@ int main(int argc, char **argv)
             }
             else
             {
-                max_atuais = static_cast<uint32_t>(max_atuais);
+                max_atuais = static_cast<unsigned int>(max_atuais);
+                max_novos = static_cast<unsigned int>(limite_populacional-max_atuais);
             }
         }
         catch (std::out_of_range &e)
@@ -118,39 +119,6 @@ int main(int argc, char **argv)
             error = true;
         }
 
-        // #########################################################################################################################################################
-
-        int32_t max_novos;
-
-        try
-        {
-            max_novos = std::stoi(argv[5]);
-            if (max_novos < 0)
-            {
-                printf("O total de sobreviventes dos filhos não pode ser negativo\n");
-                error = true;
-            }
-            else if (max_novos > limite_populacional)
-            {
-                printf("O total de sobreviventes dos filhos não pode ser maior que o limite populacional\n");
-                error = true;
-            }
-            else if (max_atuais + max_novos != limite_populacional)
-            {
-                // Podemos testar isso agora que temos 'max_atuais' e 'max_novos'
-                printf("O total de sobreviventes da população atual e de sobreviventes dos filhos deve ser igual ao limite populacional\n");
-                error = true;
-            }
-            else
-            {
-                max_novos = static_cast<uint32_t>(max_novos);
-            }
-        }
-        catch (std::out_of_range &e)
-        {
-            printf("Total de sobreviventes dos filhos passado não foi inteiro\n");
-            error = true;
-        }
 
         // #########################################################################################################################################################
 
@@ -158,7 +126,7 @@ int main(int argc, char **argv)
 
         try
         {
-            modo_temporal = std::stoi(argv[6]);
+            modo_temporal = std::stoi(argv[5]);
             if (modo_temporal != 0 && modo_temporal != 1)
             {
                 printf("Valor de modo inválido, deve ser 0 ou 1\n");
@@ -177,11 +145,11 @@ int main(int argc, char **argv)
 
         // #########################################################################################################################################################
 
-        int32_t condicao_de_parada;
+        int condicao_de_parada;
 
         try
         {
-            condicao_de_parada = std::stoi(argv[7]);
+            condicao_de_parada = std::stoi(argv[6]);
             if (condicao_de_parada < 1)
             {
                 printf("Condição de parada deve ser um valor positivo, independente do modo\n");
@@ -189,7 +157,7 @@ int main(int argc, char **argv)
             }
             else
             {
-                condicao_de_parada = static_cast<uint32_t>(condicao_de_parada);
+                condicao_de_parada = static_cast<unsigned int>(condicao_de_parada);
             }
         }
         catch (std::out_of_range &e)
@@ -200,12 +168,12 @@ int main(int argc, char **argv)
 
         // #########################################################################################################################################################
 
-        int32_t seed = -1;
-        if (argc > 8)
+        int seed = -1;
+        if (argc > 7)
         {
             try
             {
-                seed = std::stoi(argv[8]);
+                seed = std::stoi(argv[7]);
                 if (seed < 0)
                 {
                     printf("Seed passada deve ser um valor não-negativo\n");
@@ -213,7 +181,7 @@ int main(int argc, char **argv)
                 }
                 else
                 {
-                    seed = static_cast<uint32_t>(seed);
+                    seed = static_cast<unsigned int>(seed);
                 }
             }
             catch (std::out_of_range &e)
@@ -234,10 +202,10 @@ int main(int argc, char **argv)
 
             std::ifstream in_file;
 
-            if (argc == 10)
+            if (argc == 9)
             {
                 // entrada por arquivo
-                std::string in_file_name = argv[9];
+                std::string in_file_name = argv[8];
                 std::string line;
 
                 in_file.open(in_file_name);
@@ -260,26 +228,26 @@ int main(int argc, char **argv)
             }
 
             // Setando variáveis globais
-            tam_particao = static_cast<uint8_t>(floor((tarefas / 3)));
-            max_mutacoes = static_cast<uint8_t>(floor((tarefas / 2)));
-            total_pais = std::max((uint32_t)2, static_cast<uint32_t>(floor((limite_populacional / 5))));
+            tam_particao = static_cast<unsigned int>(floor((tarefas / 3)));
+            max_mutacoes = static_cast<unsigned int>(floor(sqrt(tarefas)));
+            total_pais = std::max((unsigned int)1, static_cast<unsigned int>(floor(std::log2(limite_populacional))));
 
-            std::vector<uint8_t> solucao_inicial(tarefas);
+            std::vector<unsigned int> solucao_inicial(tarefas);
 
-            if (argc == 10)
+            if (argc == 9)
             {
                 std::string line;
-                uint16_t i = 0;
+                unsigned int i = 0;
                 while (std::getline(in_file, line))
                 {
-                    solucao_inicial[i] = static_cast<uint8_t>(std::stoi(line));
+                    solucao_inicial[i] = static_cast<unsigned int>(std::stoi(line));
                     ++i;
                 }
                 in_file.close();
             }
             else
             {
-                for (int i = 0; i < tarefas; ++i)
+                for (unsigned int i = 0; i < tarefas; ++i)
                 {
                     std::cin >> solucao_inicial[i];
                 }
@@ -314,7 +282,7 @@ int main(int argc, char **argv)
                     printf(msg_inicializacao);
                     out_file << msg_inicializacao;
                 }
-                for (int j = 0; j < tarefas; ++j)
+                for (unsigned int j = 0; j < tarefas; ++j)
                 {
                     if (i == 0)
                     {

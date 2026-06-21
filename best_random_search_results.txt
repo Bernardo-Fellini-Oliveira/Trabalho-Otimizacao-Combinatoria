@@ -1,0 +1,31 @@
+adm_50_1 2000
+adm_50_2 1945
+adm_50_3 1660
+adm_50_4 1849
+adm_100_1 3870
+adm_100_2 3430
+adm_100_3 4087
+adm_100_4 3004
+adm_1000_1 inf
+adm_1000_2 inf
+adm_1000_3 inf
+adm_1000_4 inf
+
+params: k=30, limite_populacional=100, max_atuais=0
+
+seeds para instancias executadas em modo random
+seeds para instâncias de tamanho 50:
+seed para instância 1: 787363
+seed para instância 2: 377991
+seed para instância 3: 506716
+seed para instância 4: 214113
+seeds para instâncias de tamanho 100:
+seed para instância 1: 422497
+seed para instância 2: 339370
+seed para instância 3: 625066
+seed para instância 4: 458862
+seeds para instâncias de tamanho 1000:
+seed para instância 1: 784061
+seed para instância 2: 538652
+seed para instância 3: 667061
+seed para instância 4: 924407
